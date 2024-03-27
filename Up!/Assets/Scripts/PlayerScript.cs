@@ -17,6 +17,7 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         movement();
+        transform.Translate(new Vector3(0, -0.5f, 0) * Time.deltaTime);
     }
     
     private void movement()
