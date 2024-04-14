@@ -19,15 +19,21 @@ public class PlayerScript : MonoBehaviour
         movement();
         transform.Translate(new Vector3(0, -0.5f, 0) * Time.deltaTime);
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Jump" && collision.relativeVelocity.y >= 0)
+        {
+            Jump();
+        }
+    }
     private void movement()
     {
         float xInput = Input.GetAxis("Horizontal");
-        float yInput = rb.velocity.y;
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            yInput = jumpForce;
-        }
-        rb.velocity = new Vector3(xInput * playerSpeed, yInput, 0);
+;       rb.velocity = new Vector3(xInput * playerSpeed, rb.velocity.y, 0);
+    }
+    private void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
     }
 }
