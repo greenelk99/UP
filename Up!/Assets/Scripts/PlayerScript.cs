@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    [SerializeField] GameObject plattform;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float playerSpeed;
     [SerializeField] float jumpForce;
@@ -16,7 +18,7 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        movement();
+        Movement();
         transform.Translate(new Vector3(0, -0.5f, 0) * Time.deltaTime);
     }
 
@@ -25,9 +27,10 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag == "Jump" && collision.relativeVelocity.y >= 0)
         {
             Jump();
+            SpawnPlattform();
         }
     }
-    private void movement()
+    private void Movement()
     {
         float xInput = Input.GetAxis("Horizontal");
 ;       rb.velocity = new Vector3(xInput * playerSpeed, rb.velocity.y, 0);
@@ -35,5 +38,13 @@ public class PlayerScript : MonoBehaviour
     private void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
+    }
+
+    private void SpawnPlattform()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Instantiate(plattform, new Vector3(Random.Range(-8f, 8f), Random.Range(gameObject.transform.position.y, gameObject.transform.position.y + 5f), 0), Quaternion.identity);
+        }
     }
 }
